@@ -42,13 +42,11 @@ class App extends React.Component {
     this.setState({ todos: [...todos] });
   };
 
-  handleToggleAll = () => {
+  handleToggleAll = (checked) => {
     const { todos } = this.state;
+    const toggleAll = todos.map((data) => ({ ...data, status: checked }));
 
-    todos.staus = !todos.status;
-    todos.map((data) => (data.status = !data.status));
-
-    this.setState({ todos: [...todos] });
+    this.setState({ todos: [...toggleAll] });
   };
   render() {
     const statusCount = this.state.todos.filter((todo) => todo.status).length;
@@ -66,6 +64,7 @@ class App extends React.Component {
             <label htmlFor="NewTodo">
               <input
                 type="text"
+                name="todo"
                 value={this.state.newTodo}
                 placeholder="Type your todo"
                 onChange={(e) => {
@@ -82,8 +81,12 @@ class App extends React.Component {
               <label className="todo-list">
                 <input
                   type="checkbox"
-                  checked={this.state.todos.status}
-                  onChange={this.handleToggleAll}
+                  checked={statusCount === this.state.todos.length}
+                  onClick={() =>
+                    this.handleToggleAll(
+                      statusCount !== this.state.todos.length
+                    )
+                  }
                 />
                 <div className="todo-name">Select All</div>
               </label>
